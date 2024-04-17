@@ -52,6 +52,7 @@ CONST CHAR8  *mExceptionNameStr[]    = {
   "Reserved",
   "Reserved",
   "Reserved",
+  "#HV - Hypervisor Injection",
   "#VC - VMM Communication",
 };
 
