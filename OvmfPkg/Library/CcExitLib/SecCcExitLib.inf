@@ -23,6 +23,7 @@
 [Sources.common]
   CcExitLib.c
   CcExitVcHandler.c
+  CcExitHvHandler.c
   CcExitVcHandler.h
   CcInstruction.c
   SecCcExitVcHandler.c
