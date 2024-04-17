@@ -1807,7 +1807,7 @@ InternalVmgExitHandleVc (
 **/
 VOID
 EFIAPI
-VmgExitIssueAssert (
+VmgExitVcIssueAssert (
   IN OUT SEV_ES_PER_CPU_DATA  *SevEsData
   )
 {
