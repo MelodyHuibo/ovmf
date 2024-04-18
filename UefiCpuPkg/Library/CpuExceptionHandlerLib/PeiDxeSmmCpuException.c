@@ -47,6 +47,21 @@ CommonExceptionHandlerWorker (
 
       break;
 
+    case HV_EXCEPTION:
+      // #HV needs to be handled immediately upon enabling exception handling
+      // and therefore can't use the RegisterCpuInterruptHandler() interface.
+      // Handle the #HV:
+      //   On EFI_SUCCESS - Exception has been handled, return
+      //   On other       - ExceptionType contains (possibly new) exception
+      //                    value
+      //
+      Status = CcExitHandleHv (&ExceptionType, SystemContext);
+      if (!EFI_ERROR (Status)) {
+        return;
+      }
+
+      break;
+
     case VE_EXCEPTION:
       //
       // #VE needs to be handled immediately upon enabling exception handling
