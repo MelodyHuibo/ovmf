@@ -24,9 +24,11 @@
   CcExitLib.c
   CcExitVcHandler.c
   CcExitHvHandler.c
+  CcExitHvHandlerh.
   CcExitVcHandler.h
   CcInstruction.c
   SecCcExitVcHandler.c
+  SecCcExitHvHandler.c
   CcExitVeHandler.c
   X64/TdVmcallCpuid.nasm
 
@@ -44,6 +46,7 @@
   PcdLib
 
 [FixedPcd]
+  gUefiCpuPkgTokenSpaceGuid.PcdSevEsWorkAreaBase
   gUefiOvmfPkgTokenSpaceGuid.PcdOvmfSecGhcbBackupBase
   gUefiOvmfPkgTokenSpaceGuid.PcdOvmfSecGhcbBackupSize
   gUefiOvmfPkgTokenSpaceGuid.PcdOvmfCpuidBase

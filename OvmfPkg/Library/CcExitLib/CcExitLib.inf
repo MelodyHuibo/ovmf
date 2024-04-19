@@ -25,9 +25,11 @@
   CcExitLib.c
   CcExitVcHandler.c
   CcExitHvHandler.c
+  CcExitHvHandler.h
   CcExitVcHandler.h
   CcInstruction.c
   PeiDxeCcExitVcHandler.c
+  PeiDxeCcExitHvHandler.c
   CcExitVeHandler.c
   X64/TdVmcallCpuid.nasm
 
@@ -44,5 +46,6 @@
   MemEncryptSevLib
 
 [Pcd]
+  gUefiCpuPkgTokenSpaceGuid.PcdGhcbHypervisorFeatures
   gUefiOvmfPkgTokenSpaceGuid.PcdOvmfCpuidBase
   gUefiOvmfPkgTokenSpaceGuid.PcdOvmfCpuidSize

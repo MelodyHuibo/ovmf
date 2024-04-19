@@ -13,7 +13,7 @@
 
 #include <Base.h>
 #include <WorkArea.h>
-
+#include <Register/Amd/Ghcb.h>
 //
 // Define the maximum number of #VCs allowed (e.g. the level of nesting
 // that is allowed => 2 allows for 1 nested #VCs). I this value is changed,
@@ -35,6 +35,8 @@ typedef struct {
 
   UINTN     VcCount;
   VOID      *GhcbBackupPages;
+  HVDB      *Hvdb;
+  BOOLEAN   HvdbPendingEvent;
 } SEV_ES_PER_CPU_DATA;
 
 //
