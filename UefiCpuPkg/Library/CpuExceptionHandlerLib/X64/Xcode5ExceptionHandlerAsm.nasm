@@ -45,6 +45,7 @@ endstruc
 extern ASM_PFX(mErrorCodeFlag)    ; Error code flags for exceptions
 extern ASM_PFX(mDoFarReturnFlag)  ; Do far return flag
 extern ASM_PFX(CommonExceptionHandler)
+extern ASM_PFX(ArchRunHvdbPendingEvents)
 
 SECTION .data
 
@@ -250,8 +251,10 @@ HasErrorCode:
     push    rax
 
 ;; UINT64  Dr0, Dr1, Dr2, Dr3, Dr6, Dr7;
+    cmp     qword [rbp + 8], HV_EXCEPTION
+    je      SkipDebugRegs        ; For SEV-SNP (#HV) Debug registers ignored
     cmp     qword [rbp + 8], VC_EXCEPTION
-    je      VcDebugRegs          ; For SEV-ES (#VC) Debug registers ignored
+    je      SkipDebugRegs          ; For SEV-ES (#VC) Debug registers ignored
 
     mov     rax, dr7
     push    rax
@@ -267,7 +270,7 @@ HasErrorCode:
     push    rax
     jmp     DrFinish
 
-VcDebugRegs:
+SkipDebugRegs:
 ;; UINT64  Dr0, Dr1, Dr2, Dr3, Dr6, Dr7 are skipped for #VC to avoid exception recursion
     xor     rax, rax
     push    rax
@@ -298,6 +301,9 @@ DrFinish:
     ;
     sub     rsp, 4 * 8 + 8
     call    ASM_PFX(CommonExceptionHandler)
+    mov     rcx, [rbp + 8]
+    mov     rdx, rsp
+    call    ASM_PFX(ArchRunHvdbPendingEvents)
     add     rsp, 4 * 8 + 8
 
     ; The follow algorithm is used for clear shadow stack token busy bit.

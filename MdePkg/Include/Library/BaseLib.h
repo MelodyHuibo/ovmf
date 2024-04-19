@@ -4702,6 +4702,16 @@ EnableInterrupts (
   VOID
   );
 
+ /**
+  Enables CPU interrupts.
+
+**/
+VOID
+EFIAPI
+AsmEnableInterrupts (
+  VOID
+  );
+
 /**
   Disables CPU interrupts.
 
@@ -4709,6 +4719,16 @@ EnableInterrupts (
 VOID
 EFIAPI
 DisableInterrupts (
+  VOID
+  );
+
+/**
+  Disables CPU interrupts.
+
+**/
+VOID
+EFIAPI
+AsmDisableInterrupts (
   VOID
   );
 

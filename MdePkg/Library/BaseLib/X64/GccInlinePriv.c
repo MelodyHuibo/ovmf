@@ -19,7 +19,7 @@
 **/
 VOID
 EFIAPI
-EnableInterrupts (
+AsmEnableInterrupts (
   VOID
   )
 {
@@ -34,7 +34,7 @@ EnableInterrupts (
 **/
 VOID
 EFIAPI
-DisableInterrupts (
+AsmDisableInterrupts (
   VOID
   )
 {

@@ -42,18 +42,20 @@
   IN OUT EFI_SYSTEM_CONTEXT   SystemContext
    )
  {
-     HVDB                    *Hvdb;
-  BOOLEAN                 InterruptState;
+  EFI_SYSTEM_CONTEXT_X64  *Regs;
+  IA32_EFLAGS32           Rflags;
+  HVDB                    *Hvdb;
   UINT16                  *PendingEvents;
   HVDB_EVENTS             Events;
 
+  Regs = SystemContext.SystemContextX64;
   Hvdb = SevEsData->Hvdb;
   ASSERT (Hvdb != NULL);
 
   SevEsData->HvdbPendingEvent = TRUE;
 
-  InterruptState = GetInterruptState ();
-  if (!InterruptState) {
+  Rflags.UintN = Regs->Rflags;
+  if (!Rflags.Bits.IF) {
     //
     // Interrupts are disabled, only process non-maskable events
     //
@@ -62,7 +64,8 @@
 
     if (Hvdb->Events.PendingEvents.Bits.MceRequested) {
     }
-
+    
+    Hvdb->Events.PendingEvents.Bits.NoFurtherSignal = 0;
     return EFI_SUCCESS;
   }
 
