@@ -67,6 +67,8 @@
   PlatformInitLib
 
 [Pcd]
+  gUefiOvmfPkgTokenSpaceGuid.PcdHvdbBase
+  gUefiOvmfPkgTokenSpaceGuid.PcdHvdbSize
   gUefiOvmfPkgTokenSpaceGuid.PcdOvmfPeiMemFvBase
   gUefiOvmfPkgTokenSpaceGuid.PcdOvmfPeiMemFvSize
   gUefiOvmfPkgTokenSpaceGuid.PcdOvmfDxeMemFvBase

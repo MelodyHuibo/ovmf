@@ -524,6 +524,10 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdGhcbSize|0
   gUefiCpuPkgTokenSpaceGuid.PcdSevEsIsEnabled|0
 
+  # Set SEV-SNP restricted injection defaults
+  gUefiOvmfPkgTokenSpaceGuid.PcdHvdbBase|0
+  gUefiOvmfPkgTokenSpaceGuid.PcdHvdbSize|0
+
   gEfiSecurityPkgTokenSpaceGuid.PcdOptionRomImageVerificationPolicy|0x00
 
   # Set ConfidentialComputing defaults
