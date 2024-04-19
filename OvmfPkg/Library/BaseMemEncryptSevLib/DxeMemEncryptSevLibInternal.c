@@ -53,6 +53,8 @@ AmdMemEncryptionAttrCheck (
       return CurrentAttr >= CCAttrAmdSevEs;
     case CCAttrAmdSevSnp:
       return CurrentAttr == CCAttrAmdSevSnp;
+    case CCAttrAmdSevSnpRestrictedInj:
+      return CurrentAttr == CCAttrAmdSevSnpRestrictedInj;
     default:
       return FALSE;
   }
@@ -159,3 +161,20 @@ MemEncryptSevGetEncryptionMask (
 
   return mSevEncryptionMask;
 }
+
+/**
+  Returns a boolean to indicate whether SEV-SNP is running with
+  restricted interrupt injection
+
+  @retval TRUE           SEV-SNP restricted injection is enabled
+  @retval FALSE          SEV-SNP restricted injection is not enabled
+**/
+BOOLEAN
+EFIAPI
+MemEncryptSevSnpRestrictedInjEnabled (
+  VOID
+  )
+{
+    return ConfidentialComputingGuestHas (CCAttrAmdSevSnpRestrictedInj);
+}
+

@@ -434,6 +434,9 @@ AmdSevInitialize (
     PcdStatus = PcdSet64S (PcdConfidentialComputingGuestAttr, CCAttrAmdSev);
   }
 
+  if (MemEncryptSevSnpRestrictedInjEnabled ()) {
+    PcdStatus = PcdSet64S (PcdConfidentialComputingGuestAttr, CCAttrAmdSevSnpRestrictedInj);
+   }
   ASSERT_RETURN_ERROR (PcdStatus);
 }
 

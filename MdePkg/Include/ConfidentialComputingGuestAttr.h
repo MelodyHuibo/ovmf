@@ -26,6 +26,7 @@ typedef enum {
   CCAttrAmdSev    = 0x100,
   CCAttrAmdSevEs  = 0x101,
   CCAttrAmdSevSnp = 0x102,
+  CCAttrAmdSevSnpRestrictedInj = 0x103,
 
   /* The guest is running with Intel TDX memory encryption enabled. */
   CCAttrIntelTdx = 0x200,
