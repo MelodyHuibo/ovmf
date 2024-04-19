@@ -14,7 +14,51 @@
    #include <Register/Amd/Msr.h>
   
    #include "CcExitHvHandler.h"
-  
+ 
+STATIC BOOLEAN mHvFeaturesRead = FALSE;
+STATIC UINT64  mHvFeatures     = 0;
+
+/**
+ Get the hypervisor features bitmap
+
+**/
+STATIC
+UINT64
+GetHypervisorFeatures (
+  VOID
+  )
+{
+  RETURN_STATUS                   Status;
+  GHCB                            *Ghcb;
+  MSR_SEV_ES_GHCB_REGISTER        Msr;
+  BOOLEAN                         InterruptState;
+  UINT64                          Features;
+
+  Msr.GhcbPhysicalAddress = AsmReadMsr64 (MSR_SEV_ES_GHCB);
+  Ghcb = Msr.Ghcb;
+
+  //
+  // Initialize the GHCB
+  //
+  CcExitVmgInit (Ghcb, &InterruptState);
+
+  //
+  // Query the Hypervisor Features.
+  //
+  Status = CcExitVmgExit (Ghcb, SVM_EXIT_HYPERVISOR_FEATURES, 0, 0);
+  if ((Status != 0)) {
+    VmgExitHvIssueAssert (NULL);
+  }
+
+  Features = Ghcb->SaveArea.SwExitInfo2;
+
+  CcExitVmgDone (Ghcb, InterruptState);
+
+  return Features;
+}
+
+
+
    /**
     Handle a #HV exception.
    
@@ -38,16 +82,22 @@
      IN OUT EFI_SYSTEM_CONTEXT  SystemContext
      )
    {
-     UINT                    HvFeatures;
      UINT                    HvSupport;
      MSR_SEV_ES_GHCB_REGISTER  Msr;
      GHCB                      *Ghcb;
      SEV_ES_PER_CPU_DATA       *SevEsData;
      EFI_STATUS                HvRet;
    
-     HvFeatures = PcdGet64 (PcdGhcbHypervisorFeatures);
-   
-     HvSupport = HvFeatures & GHCB_HV_FEATURES_SNP_RESTRICTED_INJECTION;
+     //
+     // If interrupts are disabled, a PcdGet64() call will ASSERT (TPL level), so
+     // the HV features must be obtained using a VMGEXIT.
+     //
+     if (!mHvFeaturesRead) {
+       mHvFeatures = GetHypervisorFeatures ();
+       mHvFeaturesRead = TRUE;
+     }  
+
+     HvSupport = mHvFeatures & GHCB_HV_FEATURES_SNP_RESTRICTED_INJECTION;
      if (HvSupport != GHCB_HV_FEATURES_SNP_RESTRICTED_INJECTION) {
        *ExceptionType = HV_EXCEPTION;
        HvRet = EFI_UNSUPPORTED;
